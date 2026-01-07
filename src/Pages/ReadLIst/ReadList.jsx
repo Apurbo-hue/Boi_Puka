@@ -4,6 +4,10 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import Book from '../Book/Book';
 import { getStoredBook } from '../../utilites/addToDB';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const MySwal = withReactContent(Swal)
 
 const ReadList = () => {
   const datas = useLoaderData()
@@ -26,18 +30,16 @@ const ReadList = () => {
     }, []
   )
 
-  const handleSortBy = (type) =>{
+  const handleSortBy = (type) => {
 
     setSortBy(type);
 
-    if (type === "pages")
-    {
-      const sortByPage = [...readLists].sort((a,b)=>a.totalPages-b.totalPages);
+    if (type === "pages") {
+      const sortByPage = [...readLists].sort((a, b) => a.totalPages - b.totalPages);
       setReadLists(sortByPage);
     }
-    else if(type ==="rating")
-    {
-      const sortByRating = [...readLists].sort((a,b)=>a.rating-b.rating);
+    else if (type === "rating") {
+      const sortByRating = [...readLists].sort((a, b) => a.rating - b.rating);
       setReadLists(sortByRating);
     }
   }
@@ -55,14 +57,21 @@ const ReadList = () => {
         <div className='flex justify-between'>
 
           <details className="dropdown">
-            <summary className="btn mb-2 p-2">Sort By : {sortBy?sortBy:""}</summary>
+            <summary className="btn mb-2 p-2">Sort By : {sortBy ? sortBy : ""}</summary>
             <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
               <li onClick={() => handleSortBy("pages")}><a>Pages no.</a></li>
               <li onClick={() => handleSortBy("rating")}><a>Rating</a></li>
             </ul>
           </details>
 
-          <button onClick={() => localStorage.setItem("readList", [])} className='btn bg-red-600 mr-2'>Clear Readlist</button>
+          <button onClick={() => {
+            localStorage.setItem("readList", []);
+            Swal.fire({
+              title: "Readlist cleared",
+              icon: "success",
+              draggable: true
+            });
+          }} className='btn bg-red-600 mr-2'>Clear Readlist</button>
 
         </div>
 

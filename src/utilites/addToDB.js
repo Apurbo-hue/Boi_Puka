@@ -30,6 +30,7 @@ const removeID = (id) => {
     const removedData = Data.filter(data => data != id)
     const removedDataConverted = JSON.stringify(removedData)
     localStorage.setItem("readList", removedDataConverted)
+    
 }
 
 export { addToStoredDB, removeID, getStoredBook }

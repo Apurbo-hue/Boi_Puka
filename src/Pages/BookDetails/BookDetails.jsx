@@ -2,6 +2,10 @@ import React from 'react';
 import star from '../../assets/Vector (1).png'
 import { useLoaderData, useNavigate, useParams } from 'react-router';
 import { addToStoredDB, removeID } from '../../utilites/addToDB';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const MySwal = withReactContent(Swal)
 
 const BookDetails = () => {
     const { id } = useParams()
@@ -9,9 +13,13 @@ const BookDetails = () => {
     const data = datas.find(book => book.bookId === parseInt(id))
     const navigate = useNavigate()
 
-    const handleMarkAsRead = (id)=>
-    {
-         addToStoredDB(id)
+    const handleMarkAsRead = (id) => {
+        addToStoredDB(id)
+        Swal.fire({
+            title: "Marked as read",
+            icon: "success",
+            draggable: true
+        });
     }
 
     const { bookName, author, image, publisher, rating, review,
@@ -45,9 +53,16 @@ const BookDetails = () => {
                     </figure>
                 </div>
                 <div className='grid grid-cols-2'>
-                    <button onClick={()=>handleMarkAsRead(id)} className='btn btn-outline px-6 mr-2'>Mark as read</button>
-                    <button onClick={()=>removeID(id)} className='btn btn-error  mr-2'>Remove from readlist</button>
-                
+                    <button onClick={() => handleMarkAsRead(id)} className='btn btn-outline px-6 mr-2'>Mark as read</button>
+                    <button onClick={() => {
+                        removeID(id);
+                        Swal.fire({
+                            title: "Removed from readlist",
+                            icon: "success",
+                            draggable: true
+                        });
+                    }} className='btn btn-error  mr-2'>Remove from readlist</button>
+
                 </div>
                 <button className='btn btn-info rounded-lg text-white' onClick={() => navigate(-1)}>BACK</button>
             </div>
